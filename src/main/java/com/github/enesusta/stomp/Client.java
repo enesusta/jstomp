@@ -1,5 +1,6 @@
 package com.github.enesusta.stomp;
 
+import com.github.enesusta.stomp.broker.BrokerAuthResponse;
 import com.github.enesusta.stomp.exception.AuthException;
 
 import java.io.*;
@@ -21,6 +22,8 @@ public class Client {
         socket = new Socket(server, port);
         outputStream = socket.getOutputStream();
         inputStream = socket.getInputStream();
+        System.out.println(socket.isClosed());
+        System.out.println(socket.isConnected());
 
         HashMap h = new HashMap();
         h.put("login", login);
@@ -46,7 +49,8 @@ public class Client {
         outputStream.write(message.toString().getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
 
-
+        System.out.println(Thread.currentThread().getName());
+        isAuth();
 
     }
 
@@ -71,6 +75,11 @@ public class Client {
         message.append(msg + " at :" + new Date());
         message.append("\000");
         outputStream.write(message.toString().getBytes(StandardCharsets.UTF_8));
+        outputStream.flush();
+    }
+
+    private void isAuth() {
+        BrokerAuthResponse.getInstance().filter(inputStream);
     }
 
 }

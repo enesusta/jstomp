@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class App {
     public static void main(String[] args) throws IOException, AuthException {
-        Client client = new Client("localhost", 61613, "gu2est", "guest", "/");
+        Client client = new Client("localhost", 61613, "guest", "guest", "/");
         client.send("/queue/test", "hello queue");
     }
 }
