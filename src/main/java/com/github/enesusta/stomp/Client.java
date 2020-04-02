@@ -1,8 +1,8 @@
 package com.github.enesusta.stomp;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.github.enesusta.stomp.exception.AuthException;
+
+import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -17,7 +17,7 @@ public class Client {
     private InputStream inputStream;
     private Socket socket;
 
-    public Client(String server, int port, String login, String pass, String vhost) throws IOException {
+    public Client(String server, int port, String login, String pass, String vhost) throws IOException, AuthException {
         socket = new Socket(server, port);
         outputStream = socket.getOutputStream();
         inputStream = socket.getInputStream();
@@ -44,6 +44,10 @@ public class Client {
         message.append("\n");
         message.append("\000");
         outputStream.write(message.toString().getBytes(StandardCharsets.UTF_8));
+        outputStream.flush();
+
+
+
     }
 
     void send(String dest, String msg) throws IOException {
